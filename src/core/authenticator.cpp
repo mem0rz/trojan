@@ -27,6 +27,13 @@ using namespace std;
 Authenticator::Authenticator(const Config &config) {
     mysql_init(&con);
     Log::log_with_date_time("connecting to MySQL server " + config.mysql.server_addr + ':' + to_string(config.mysql.server_port), Log::INFO);
+    if (config.mysql.cafile.c_str() == NULL) {
+	} else if (config.mysql.tls_version.c_str() == NULL) {
+		mysql_ssl_set(&con, NULL, NULL, config.mysql.cafile.c_str(), NULL, NULL);
+	} else  {
+		mysql_ssl_set(&con, NULL, NULL, config.mysql.cafile.c_str(), NULL, NULL);
+		mysql_optionsv(&con, MARIADB_OPT_TLS_VERSION, config.mysql.tls_version.c_str());
+    }
     if (mysql_real_connect(&con, config.mysql.server_addr.c_str(),
                                  config.mysql.username.c_str(),
                                  config.mysql.password.c_str(),

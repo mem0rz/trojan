@@ -30,7 +30,7 @@ Authenticator::Authenticator(const Config &config) {
     if (config.mysql.cafile != "") {
         mysql_ssl_set(&con, NULL, NULL, config.mysql.cafile.c_str(), NULL, NULL);
     }
-    if (config.mysql.tls_version == "") {
+    if (config.mysql.tls_version != "") {
         mysql_optionsv(&con, MARIADB_OPT_TLS_VERSION, config.mysql.tls_version.c_str());
     }
     if (mysql_real_connect(&con, config.mysql.server_addr.c_str(),

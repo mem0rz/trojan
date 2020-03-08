@@ -100,6 +100,7 @@ void Config::populate(const ptree &tree) {
     mysql.password = tree.get("mysql.password", string());
     mysql.cafile = tree.get("mysql.cafile", string());
     mysql.tls_version = tree.get("mysql.tls_version", string());
+    mysql.nodeid = tree.get("mysql.nodeid", string());
 }
 
 bool Config::sip003() {

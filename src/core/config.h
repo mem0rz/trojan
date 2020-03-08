@@ -80,6 +80,7 @@ public:
         std::string password;
         std::string cafile;
         std::string tls_version;
+        std::string nodeid;
     } mysql;
     void load(const std::string &filename);
     void populate(const std::string &JSON);

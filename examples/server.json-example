@@ -42,6 +42,7 @@
         "username": "trojan",
         "password": ""，
         "cafile": "",
-        "tls_version": ""
+        "tls_version": "",
+        "nodeid": ""
     }
 }

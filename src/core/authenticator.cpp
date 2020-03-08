@@ -53,6 +53,10 @@ bool Authenticator::auth(const string &password) {
         Log::log_with_date_time(mysql_error(&con), Log::ERROR);
         return false;
     }
+    if (mysql_query(&con, ("SELECT rate FROM nodes WHERE nodeid = '" + nodeid + '\'').c_str())) {
+        Log::log_with_date_time(mysql_error(&con), Log::ERROR);
+        return false;
+    }
     MYSQL_RES *res = mysql_store_result(&con);
     if (res == NULL) {
         Log::log_with_date_time(mysql_error(&con), Log::ERROR);
@@ -65,6 +69,7 @@ bool Authenticator::auth(const string &password) {
     }
     int64_t quota = atoll(row[0]);
     int64_t used = atoll(row[1]);
+    uint8_t rate =atoi(row[2])
     mysql_free_result(res);
     if (quota < 0) {
         return true;
@@ -80,7 +85,7 @@ void Authenticator::record(const std::string &password, uint64_t download, uint6
     if (!is_valid_password(password)) {
         return;
     }
-    if (mysql_query(&con, ("UPDATE users SET download = download + " + to_string(download) + ", upload = upload + " + to_string(upload) + " WHERE password = '" + password + '\'').c_str())) {
+    if (mysql_query(&con, ("UPDATE users SET download = download + " + to_string(download * rate) + ", upload = upload + " + to_string(upload * rate) + " WHERE password = '" + password + '\'').c_str())) {
         Log::log_with_date_time(mysql_error(&con), Log::ERROR);
     }
 }

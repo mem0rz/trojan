@@ -1,5 +1,45 @@
-# find ngtcp2
-find_package(ngtcp2 REQUIRED)
+# - Find ngtcp2
+# Find the native ngtcp2 includes and libraries
+#
+#  NGTCP2_INCLUDE_DIR - where to find ngtcp2.h, etc.
+#  NGTCP2_LIBRARIES   - List of libraries when using ngtcp2.
+#  NGTCP2_FOUND       - True if ngtcp2 found.
 
-# link ngtcp2
-target_link_libraries(trojan PRIVATE ngtcp2)
+IF (NGTCP2_INCLUDE_DIR)
+  # Already in cache, be silent
+  SET(NGTCP2_FIND_QUIETLY TRUE)
+ENDIF (NGTCP2_INCLUDE_DIR)
+
+FIND_PATH(NGTCP2_INCLUDE_DIR ngtcp2/ngtcp2.h
+  /usr/local/include/ngtcp2
+  /usr/include/ngtcp2
+)
+
+FIND_LIBRARY(NGTCP2_LIBRARY
+  NAMES ngtcp2
+  PATHS /usr/lib /usr/local/lib
+)
+
+IF (NGTCP2_INCLUDE_DIR AND NGTCP2_LIBRARY)
+  SET(NGTCP2_FOUND TRUE)
+  SET( NGTCP2_LIBRARIES ${NGTCP2_LIBRARY} )
+ELSE (NGTCP2_INCLUDE_DIR AND NGTCP2_LIBRARY)
+  SET(NGTCP2_FOUND FALSE)
+  SET( NGTCP2_LIBRARIES )
+ENDIF (NGTCP2_INCLUDE_DIR AND NGTCP2_LIBRARY)
+
+IF (NGTCP2_FOUND)
+  IF (NOT NGTCP2_FIND_QUIETLY)
+    MESSAGE(STATUS "Found ngtcp2: ${NGTCP2_LIBRARY}")
+  ENDIF (NOT NGTCP2_FIND_QUIETLY)
+ELSE (NGTCP2_FOUND)
+  IF (NGTCP2_FIND_REQUIRED)
+    MESSAGE(STATUS "Looked for ngtcp2 library.")
+    MESSAGE(FATAL_ERROR "Could NOT find ngtcp2 library")
+  ENDIF (NGTCP2_FIND_REQUIRED)
+ENDIF (NGTCP2_FOUND)
+
+MARK_AS_ADVANCED(
+  NGTCP2_LIBRARY
+  NGTCP2_INCLUDE_DIR
+)

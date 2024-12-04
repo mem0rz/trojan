@@ -23,6 +23,10 @@
 #include <boost/program_options.hpp>
 #include <boost/version.hpp>
 #include <openssl/opensslv.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <ngtcp2/ngtcp2.h>
+#include <ngtcp2/ngtcp2_crypto.h>
 #ifdef ENABLE_MYSQL
 #include <mysql.h>
 #endif // ENABLE_MYSQL
